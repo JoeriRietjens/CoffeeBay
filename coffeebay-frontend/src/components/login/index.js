@@ -1,9 +1,9 @@
 import React from "react";
 import "./styles.scss";
 
-export const Login = ({ userinfo, setUserinfo }) => {
+export const Login = ({ userinfo, setUserInfo }) => {
   const inputChange = (e) => {
-    setUserinfo({ ...userinfo, [e.target.name]: e.target.value });
+    setUserInfo({ ...userinfo, [e.target.name]: e.target.value });
   };
   const submit = (e) => {
     e.preventDefault();
@@ -55,7 +55,7 @@ export const Login = ({ userinfo, setUserinfo }) => {
         </div>
       </form>
       <div className="register">
-        <a href="/register">Create a new account</a>
+        <a href="/register">Create a new account ☕</a>
       </div>
     </div>
   );
