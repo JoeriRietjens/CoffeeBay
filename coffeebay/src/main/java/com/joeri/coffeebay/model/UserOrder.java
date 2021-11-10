@@ -1,21 +1,23 @@
-package com.joeri.coffeebay.models;
+package com.joeri.coffeebay.model;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-public class Order {
+@Entity
+public class UserOrder {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private boolean ready = false;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
     @Override

@@ -1,6 +1,6 @@
 package com.joeri.coffeebay.repository;
 
-import com.joeri.coffeebay.models.User;
+import com.joeri.coffeebay.model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

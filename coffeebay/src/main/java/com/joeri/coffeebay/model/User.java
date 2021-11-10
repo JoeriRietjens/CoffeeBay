@@ -1,4 +1,4 @@
-package com.joeri.coffeebay.models;
+package com.joeri.coffeebay.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 
 @Entity
@@ -23,8 +23,8 @@ public class User {
     @Column(name = "password", nullable = false, length = 128)
     private String password;
     
-    @ManyToOne(cascade = CascadeType.ALL)
-    private List<Order> orders = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<UserOrder> orders = new ArrayList<>();
 
     public User(String name, String password){
        this.name = name;
@@ -50,11 +50,15 @@ public class User {
         return password;
     }
 
-    public void addOrder(Order order){
+    public void setPassword(String password){
+        this.password = password;
+    }
+    
+    public void addOrder(UserOrder order){
         orders.add(order);
     }
 
-    public void removeOrder(Order order){
+    public void removeOrder(UserOrder order){
         orders.remove(order);
     }
 
