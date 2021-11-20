@@ -1,13 +1,14 @@
 package com.joeri.coffeebay.controllers;
 
-import java.security.AccessControlException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import com.joeri.coffeebay.model.User;
 import com.joeri.coffeebay.responses.AuthenticationRequest;
-import com.joeri.coffeebay.responses.LoginResponse;
+import com.joeri.coffeebay.responses.AuthenticationResponse;
 import com.joeri.coffeebay.responses.RegisterResponse;
 import com.joeri.coffeebay.services.UserCollectionServices;
+import com.joeri.coffeebay.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-//import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -29,15 +28,20 @@ public class UserController {
     @Autowired
     private UserCollectionServices userCollectionServices;
 
+    @Autowired
+    private JwtUtil jwtTokenUtil;
+
     @GetMapping("/users")
     public List<User> all() {
         return userCollectionServices.findAll();
     }
 
-    @PostMapping("/register")
-    public ResponseEntity <RegisterResponse> create(@RequestBody User newUser){
+    @PostMapping("/register") 
+    public ResponseEntity<RegisterResponse> create(@RequestBody User newUser) {
         try {
-            System.out.println(newUser);
+
+            System.out.println(newUser.toString());
+
             RegisterResponse registerResponse = new RegisterResponse();
             userCollectionServices.createUser(newUser);
             registerResponse.setIsSucces(true);
@@ -49,19 +53,20 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity <LoginResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
-        try{
-            
-            userCollectionServices.login(authenticationRequest);
-
-            LoginResponse loginResponse = new LoginResponse();
-            return ResponseEntity.ok(loginResponse);
-        } catch (AccessControlException e) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+        System.out.println(authenticationRequest);
+        try{    
+            userCollectionServices.login(authenticationRequest);   
+        } catch (AccessDeniedException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something went wrong");
-        }
+        
+        final User user = userCollectionServices.findByUserName(authenticationRequest.getUsername());
+        final String jwt = jwtTokenUtil.generateToken(user);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @GetMapping(value="/hi")

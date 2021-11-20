@@ -1,16 +1,17 @@
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\controllers\OrderController.java
+C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\util\JwtUtil.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\socketController\ChatController.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\socketController\WebSocketEventListener.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\SecurityConfiguration.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\socketModel\ChatMessage.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\responses\AuthenticationRequest.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\CoffeebayApplication.java
-C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\responses\LoginResponse.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\services\OrderCollectionServices.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\web\WebSocketMessageConfig.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\repository\UserRepository.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\model\Product.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\util\PasswordHasher.java
+C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\responses\AuthenticationResponse.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\socketModel\MessageType.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\repository\OrderRepository.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\model\UserOrder.java
@@ -19,4 +20,3 @@ C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\controllers\UserController.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\responses\RegisterResponse.java
 C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\model\User.java
-C:\Users\joeri\OneDrive\Documenten\S3 Maatwerk\coffeebay\coffeebay\src\main\java\com\joeri\coffeebay\util\JWT.java

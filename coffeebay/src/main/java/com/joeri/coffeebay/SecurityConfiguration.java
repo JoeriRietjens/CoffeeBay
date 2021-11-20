@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter { 
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -15,11 +15,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/user/register")
-        .permitAll()
+        .antMatchers("/user/register").permitAll()
+        .antMatchers("/user/authenticate").permitAll()
         .anyRequest()
         .authenticated()
         .and()
         .httpBasic();
     }
+    /* 
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+        return super.authenticationManagerBean();
+    }
+    */
 }

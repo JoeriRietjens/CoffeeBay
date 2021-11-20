@@ -5,7 +5,11 @@ public class AuthenticationRequest {
     private String password;
 
     public AuthenticationRequest() {
-        super();
+    }
+
+    public AuthenticationRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername(){

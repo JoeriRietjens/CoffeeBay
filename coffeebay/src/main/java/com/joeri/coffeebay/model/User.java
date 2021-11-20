@@ -14,11 +14,12 @@ import javax.persistence.CascadeType;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(unique=true)
+    private int id;
 
-    @Column(name = "name", nullable = false, length = 128)
-    private String name;
+    @Column(name = "username", nullable = false, length = 128)
+    private String username;
 
     @Column(name = "password", nullable = false, length = 128)
     private String password;
@@ -26,24 +27,32 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<UserOrder> orders = new ArrayList<>();
 
-    public User(String name, String password){
-       this.name = name;
+    public User() {
+    
+    }
+
+    public User(String username, String password){
+       this.username = username;
        this.password = password;
     }
 
     @Override
     public String toString() {
         return String.format(
-            "Customer[id=%d, firstName='%s', password='%s']",
-            id, name, password);
+            "Customer[id=%d, username='%s', password='%s']",
+            id, username, password);
     }
 
-    public Long getId(){
+    public int getId(){
         return id;
     }
 
-    public String getName(){
-        return name;
+    public String getUsername(){
+        return username;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
     }
 
     public String getPassword(){

@@ -24,30 +24,29 @@ public class UserCollectionServices {
     }
 
     public void createUser(User user) throws NoSuchAlgorithmException{
-
-        if(repo.getUserByName(user.getName()) != null){
+        
+        if(repo.findByUsername(user.getUsername()) != null){
             return;
         }
         String hashedPassword = PasswordHasher.HashPassword(user.getPassword());
         user.setPassword(hashedPassword);
-
         repo.save(user);
     }
     
-    public User getUserByName(String username){
-        return repo.getUserByName(username);
+    public User findByUserName(String username){
+        return repo.findByUsername(username);
     }
 
     public User login(AuthenticationRequest authenticationRequest) throws AccessDeniedException, NoSuchAlgorithmException{
-
-        if(repo.getUserByName(authenticationRequest.getUsername()) == null){
+        System.out.println(repo.findByUsername(authenticationRequest.getUsername()));
+        if(repo.findByUsername(authenticationRequest.getUsername()) == null){
             throw new UsernameNotFoundException("user" + authenticationRequest.getUsername() + "not found");
         }
 
-        User storedUser = repo.getUserByName(authenticationRequest.getUsername());
+        User storedUser = repo.findByUsername(authenticationRequest.getUsername());
 
         if(PasswordValidator.validatePassword(storedUser.getPassword(), authenticationRequest.getPassword())){
-            User user = new User(storedUser.getName(), storedUser.getPassword());
+            User user = new User(storedUser.getUsername(), storedUser.getPassword());
             return user;
         }        
         throw new AccessDeniedException("Access Denied");
