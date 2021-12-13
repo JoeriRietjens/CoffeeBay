@@ -1,10 +1,11 @@
 import React from "react";
 import "./styles.scss";
+import { useHistory } from "react-router";
 
-export const Register = ({ userinfo, setUserInfo }) => {
-  
+export const Register = ({ userInfo, setUserInfo }) => {
+  let history = useHistory();
   const inputChange = (e) => {
-    setUserInfo({ ...userinfo, [e.target.name]: e.target.value });
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   }
   const submit = (e) => {
     e.preventDefault();
@@ -12,15 +13,17 @@ export const Register = ({ userinfo, setUserInfo }) => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userinfo),
+      mode: "cors",
+      body: JSON.stringify(userInfo),
     };
-    console.log(userinfo)
+    console.log(userInfo)
     fetch("http://localhost:8080/user/register", requestOptions).then(
       (res) => {
-        console.log(res);
-        console.log(res.data);
-      } 
-    );
+      console.log(res);
+        if (res.ok) {
+          history.push("/")
+      }
+    });
   };
 
   return (
@@ -28,11 +31,11 @@ export const Register = ({ userinfo, setUserInfo }) => {
       <form className="form" onSubmit={(e) => submit(e)}>
         <h1 className="login-title">Register</h1>
        <input
-          name="name"
           type="text"
           className="input"
-          placeholder="Name"
+          name="username"
           onChange={(e) => inputChange(e)}
+          placeholder="Username"
         ></input>
         <input
           type="password"

@@ -1,30 +1,30 @@
 import React from "react";
 import "./styles.scss";
+import { useHistory } from "react-router-dom"
 
-export const Login = ({ userinfo, setUserInfo }) => {
+export const Login = ({ user, setUser }) => {
+  let history = useHistory(); 
   const inputChange = (e) => {
-    setUserInfo({ ...userinfo, [e.target.name]: e.target.value });
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
   const submit = (e) => {
     e.preventDefault();
 
     const requestOptions = {
-      method: "Post",
-      headers: { "Content-tType": "application/json" },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       mode: "cors",
-      body: JSON.stringify(userinfo),
+      body: JSON.stringify(user),
     };
 
-    fetch("<<URL>>", requestOptions)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        if (data.jwt) {
+    fetch("http://localhost:8080/user/authenticate", requestOptions)
+    .then(function (response){return response.json();})
+    .then(function (data) {
+        if(data.jwt) {
           localStorage.setItem("JWT", data.jwt);
+          history.push("/coffeebay")
         }
-      })
-      .catch(function (error) {
+      }).catch(function (error) {
         console.log(error);
       });
   };
