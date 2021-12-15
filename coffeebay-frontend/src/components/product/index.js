@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Product = ({ orders, setOrders }) => {
+export const Product = ({ orders }) => {
 
   return (
     <ul>
