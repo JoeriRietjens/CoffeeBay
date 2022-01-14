@@ -1,26 +1,42 @@
-import { Product } from "../../product";
-import React, { Fragment, useState } from "react";
+//import { Product } from "../../product";
+import React, { Fragment, useState, useEffect } from "react";
+//import Product from "../product"
+
 import Stomp from "stompjs";
 import "./styles2.scss"
 
 export const Coffeebay = () => {
+  const username= "";
 
-  const [orders, setOrders] = useState([], false);
+  const [userOrder, setUserOrders] = useState({ products: [], isReady: false} );
   const [product, setProduct] = useState({ name: "", isReady: false });
 
-  const connect = (e) => {
-    e.preventDefault();
+  const connect = () => {
+    let token = localStorage.getItem("jwtToken");
+    let parsedToken = parseJwt(token);
+    global.username = parsedToken.sub;
+    console.log("username: ", parsedToken.sub)
     const socket = new WebSocket("ws://localhost:8080/coffeebay-socket");
     global.stompClient = Stomp.over(socket);
     global.stompClient.connect({}, onConnected, onError);
   }
 
+  const parseJwt = (token) => {
+    if (!token) {
+      return;
+    }
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+  };
+
   const onConnected = () => {
-    console.log()
+    console.log("here")
+    console.log("userORder: ", userOrder)
     global.stompClient.subscribe("/topic/public", onMessageReceived);
-    global.stompClient.send("/app/order/coffee",
+    global.stompClient.send("/app/chat.newUser",
       {},
-      JSON.stringify({ content: orders, type: "CONNECT" })
+      JSON.stringify({ sender: global.username, type: "CONNECT" })
     );
 
   };
@@ -30,22 +46,49 @@ export const Coffeebay = () => {
     if(message.type === "CONNECT"){
       console.log("hi");
     }
+    if(message.type === "CHAT"){
+      console.log("hi2");
+    }
   }
   
   const onError = (error) => {
       console.log("Could not find the connection you were looking for. Move along. Or, Refresh the page!");
   };
 
-  
+  const sendMessage =(e) => {
+    e.preventDefault();
+    let messageContent = userOrder;
+
+    if(messageContent && global.stompClient) {
+      const orderMessage = {
+        sender: global.username,
+        content: {"userOrder": messageContent},
+        type: "CHAT",
+      };
+      global.stompClient.send(
+        "/app/chat.send",
+        {},
+        JSON.stringify(orderMessage)
+      );
+
+    }
+  }
+
+  const inputChange = (e) => {
+    // setOrders({ ...userOrder.products, [e.target.name]: e.target.value })
+    setUserOrders({"products": [{"name":e.target.value}], "isReady": false})
+  }
 
   const onSubmit = e => {
+    
     e.preventDefault();
 
-    setOrders(e.name);
-    setProduct(e.name);
-    //orders.push()
+    // //orders.push(isReady: false)
+    // setUserOrders({"products": [{"name":e.target.value}], "isReady": false})
+    console.log(userOrder)
 
-    //const tempOrders = [...orders]
+    //orders.push({name: product.name, isready: false})
+    //setOrders(tempOrders)
 
     //orders.push(product)
     setProduct("")
@@ -71,23 +114,6 @@ export const Coffeebay = () => {
        // console.log(error);
       //});
   }
-    
-  // const onChange = (e) => {
-  //   setProduct({ ...product, [e.target.name]: e.target.value });
-  // }
-
-  // const completeOrder = index => {
-  //   const newOrders = [...orders];
-  //   newOrders[index].completed = true;
-  //   setOrders(newOrders)
-  // }
-
-  // const removeOrder = index => {
-  //   const newOrders = [...orders];
-  //   newOrders.splice(index, 1);
-  //   setOrders(newOrders);
-  // }
-  
   
   return (
     <Fragment>
@@ -98,62 +124,33 @@ export const Coffeebay = () => {
             <input
               type="text"
               placeholder="What would you like to order"
-              onChange={(e) => setProduct(e.target.value)}
+              onChange={(e) => inputChange(e)}
             />
             <button type="submit">Add Coffee</button>
           </form>
           <form
                 id="login-form"
                 name="login-form"
-                onSubmit={(e) => connect(e)}
+                onSubmit={(e) => sendMessage(e)}
               >
                 <div className="input-group">
                   <div className="input-group-append">
                     <button className="fas fa-location-arrow" type="submit">
-                      Connect
+                      Send
                     </button>
                   </div>
                 </div>
               </form>
+              <button onClick={() => {
+                connect();
+              }}>Connect</button>
         </div>
 
         <h1>ORDERS</h1>
-        <Product orders={orders} setOrders={setOrders} />
+
       </div>
     </Fragment>
 
-    // <div className="order-container">
-    //   <div className="header">ORDERS</div>
-    //     <div className="orders">
-    //         {orders.map((product, index) => (
-    //         <div key={product.name}
-    //         className="order"
-    //         style={{ textDecoration: product.completed ? "line-through" : ""}}
-    //         >
-    //         {product.name}
-
-    //         <button style={{ background: "#ff0003" }} onClick={() => removeOrder(index)}>x</button>
-    //         <button onClick={() => completeOrder(index)}>Complete</button>
-
-    //       </div>
-    //       ))}
-    //     </div>
-
-    //   <div className="create-order" >
-    //     <form className="form" onSubmit={(e) => onSubmit(e)}>
-    //       <input
-    //       name="name"
-    //       type="text"
-    //       className="input"
-    //       placeholder="Add your coffee"
-    //       onChange={(e) => onChange(e)}
-    //       ></input>
-    //       <button className="button" type="submit">
-    //       Add Coffee
-    //       </button>
-    //     </form>
-    //   </div>
-    // </div>
   );
 }
 

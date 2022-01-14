@@ -95,3 +95,20 @@ export const Coffeebay = () => {
     </div>
   );
 };
+
+  // const onChange = (e) => {
+  //   setProduct({ ...product, [e.target.name]: e.target.value });
+  // }
+
+  // const completeOrder = index => {
+  //   const newOrders = [...orders];
+  //   newOrders[index].completed = true;
+  //   setOrders(newOrders)
+  // }
+
+  // const removeOrder = index => {
+  //   const newOrders = [...orders];
+  //   newOrders.splice(index, 1);
+  //   setOrders(newOrders);
+  // }
+  
