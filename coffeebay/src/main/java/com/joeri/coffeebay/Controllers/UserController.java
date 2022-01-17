@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    
+
     @Autowired
     private UserCollectionServices userCollectionServices;
 
@@ -36,42 +36,39 @@ public class UserController {
         return userCollectionServices.findAll();
     }
 
-    @PostMapping("/register") 
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponse> create(@RequestBody User newUser) {
         try {
-
-            System.out.println(newUser.toString());
-
             RegisterResponse registerResponse = new RegisterResponse();
             userCollectionServices.createUser(newUser);
             registerResponse.setIsSucces(true);
-            
+
             return ResponseEntity.ok(registerResponse);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } 
+        }
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        System.out.println(authenticationRequest);
-        try{    
-            userCollectionServices.login(authenticationRequest);   
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @RequestBody AuthenticationRequest authenticationRequest) {
+        try {
+            userCollectionServices.login(authenticationRequest);
         } catch (AccessDeniedException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        
+
         final User user = userCollectionServices.findByUserName(authenticationRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(user);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    @GetMapping(value="/hi")
+    @GetMapping(value = "/hi")
     public String defaultGet() {
         return "Hello!";
     }
-    
+
 }

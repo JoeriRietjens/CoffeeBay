@@ -1,6 +1,6 @@
 package com.joeri.coffeebay.services;
 
-import com.joeri.coffeebay.model.UserOrder;
+import com.joeri.coffeebay.model.Product;
 import com.joeri.coffeebay.repository.OrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ public class OrderCollectionServices {
     @Autowired
     private OrderRepository repo;
 
-    public void createOrder(UserOrder order){
-        repo.save(order);
+    public Product createOrder(Product product){
+        return repo.save(product);
     }
 }

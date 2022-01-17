@@ -1,30 +1,42 @@
 package com.joeri.coffeebay.util;
 
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
-public class PasswordHasher{
+public class PasswordHasher {
 
-    public static String HashPassword(String password) throws NoSuchAlgorithmException{
-        /*
-        SecureRandom random = new SecureRandom();
+    public static String generateStrongPasswordHash(String password)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        int iterations = 1000;
+        char[] chars = password.toCharArray();
+        byte[] salt = getSalt();
+
+        PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = secretKeyFactory.generateSecret(spec).getEncoded();
+        return iterations + ":" + toHex(salt) + ":" + toHex(hash);
+    }
+
+    private static byte[] getSalt() throws NoSuchAlgorithmException {
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
-        random.nextBytes(salt);
+        secureRandom.nextBytes(salt);
+        return salt;
+    }
 
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(salt);
-
-        byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-
-        String stringHashedPassword = hashedPassword.toString();
-
-        return stringHashedPassword;
-        */  
-        int strength = 10;
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
-        return encodedPassword;
+    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
+        BigInteger bigInteger = new BigInteger(1, array);
+        String hex = bigInteger.toString(16);
+        int paddingLength = (array.length * 2) - hex.length();
+        if (paddingLength > 0) {
+            return String.format("%0" + paddingLength + "d", 0) + hex;
+        } else {
+            return hex;
+        }
     }
 }
