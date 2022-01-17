@@ -8,11 +8,11 @@ import "./styles2.scss"
 export const Coffeebay = () => {
   const username= "";
 
-  const [userOrder, setUserOrders] = useState({ products: [], isReady: false} );
-  const [product, setProduct] = useState({ name: "", isReady: false });
+  const [userOrder, setUserOrders] = useState({ products: [], ready: false} );
+  const [product, setProduct] = useState({ name: "", ready: false });
 
   const connect = () => {
-    let token = localStorage.getItem("jwtToken");
+    let token = localStorage.getItem("JWT");
     let parsedToken = parseJwt(token);
     global.username = parsedToken.sub;
     console.log("username: ", parsedToken.sub)
@@ -32,7 +32,7 @@ export const Coffeebay = () => {
 
   const onConnected = () => {
     console.log("here")
-    console.log("userORder: ", userOrder)
+    console.log("userOrder: ", userOrder)
     global.stompClient.subscribe("/topic/public", onMessageReceived);
     global.stompClient.send("/app/chat.newUser",
       {},
@@ -60,9 +60,10 @@ export const Coffeebay = () => {
     let messageContent = userOrder;
 
     if(messageContent && global.stompClient) {
+      console.log("messageContent: ", messageContent)
       const orderMessage = {
         sender: global.username,
-        content: {"userOrder": messageContent},
+        content: messageContent,
         type: "CHAT",
       };
       global.stompClient.send(
@@ -70,24 +71,25 @@ export const Coffeebay = () => {
         {},
         JSON.stringify(orderMessage)
       );
+      console.log(orderMessage)
 
     }
   }
 
   const inputChange = (e) => {
     // setOrders({ ...userOrder.products, [e.target.name]: e.target.value })
-    setUserOrders({"products": [{"name":e.target.value}], "isReady": false})
+    setUserOrders({"products": [{"name":e.target.value}], "ready": false})
   }
 
   const onSubmit = e => {
     
     e.preventDefault();
 
-    // //orders.push(isReady: false)
-    // setUserOrders({"products": [{"name":e.target.value}], "isReady": false})
+    // //orders.push(ready: false)
+    // setUserOrders({"products": [{"name":e.target.value}], "ready": false})
     console.log(userOrder)
 
-    //orders.push({name: product.name, isready: false})
+    //orders.push({name: product.name, ready: false})
     //setOrders(tempOrders)
 
     //orders.push(product)
