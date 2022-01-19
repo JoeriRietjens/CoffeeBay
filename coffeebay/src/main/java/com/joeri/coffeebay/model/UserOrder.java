@@ -18,6 +18,7 @@ public class UserOrder {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(unique = true)
     private Long id;
     
     @JsonProperty("ready")
